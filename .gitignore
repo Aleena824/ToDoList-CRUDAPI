@@ -1,0 +1,3 @@
+
+# Ignore specific environment variable files containing secrets
+.env
