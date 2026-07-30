@@ -51,4 +51,36 @@ router.post("/", (req,res) => {
     };
 })
 
+//To delete a task by id
+router.delete('/:id', (req,res) => {
+    const taskIdx = tasks.findIndex( t => t.id === parseInt(req.params.id));
+
+    if (taskIdx === -1) return res.status(404).json({error: "No task found"});
+
+    const deletedTask = tasks.splice(taskIdx, 1);
+
+    res.status(204).json();
+});
+
+//To update task by id
+router.put('/:id', (req,res) => {
+    const task = tasks.find(t => t.id === parseInt(req.params.id));
+
+    if (!task) {
+        return res.status(404).json({ error: `Task ${req.params.id} not found` });
+    }
+
+    const { title, done } = req.body;
+    if (title == undefined || title == "") {
+        return res.status(400).json({message: "title required."});
+    }else{
+        task.title = req.body.title;
+    }
+    if (typeof done === "boolean") {
+        task.done = done;
+    }
+
+    res.json(task);
+})
+
 module.exports = router;
